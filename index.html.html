@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6d5dfc">
+  <title>My Digital Notebook</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="My Digital Notebook home">
+        <span class="brand-mark">✦</span>
+        <span><strong>My Digital</strong><small>NOTEBOOK</small></span>
+      </a>
+
+      <button class="new-note-btn" id="newNoteBtn"><span>＋</span> New note</button>
+
+      <p class="nav-label">WORKSPACE</p>
+      <nav class="nav-list" aria-label="Notebook navigation">
+        <button class="nav-item active" data-filter="all"><span>▤</span> All notes <span class="nav-count" id="allCount">0</span></button>
+        <button class="nav-item" data-filter="favorites"><span>♡</span> Favorites</button>
+        <button class="nav-item" data-filter="recent"><span>◷</span> Recent notes</button>
+      </nav>
+
+      <p class="nav-label">FOLDERS</p>
+      <nav class="nav-list" aria-label="Note folders">
+        <button class="nav-item" data-filter="Study"><span class="folder-dot purple"></span> Study</button>
+        <button class="nav-item" data-filter="Personal"><span class="folder-dot pink"></span> Personal</button>
+        <button class="nav-item" data-filter="Ideas"><span class="folder-dot yellow"></span> Ideas</button>
+        <button class="nav-item" data-filter="Work"><span class="folder-dot green"></span> Work</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="storage-card">
+          <span class="storage-icon">✧</span>
+          <strong>Your ideas, in one place.</strong>
+          <p>Your notes are saved in this browser.</p>
+        </div>
+        <button class="nav-item theme-item" id="themeBtn"><span id="themeIcon">☾</span><span id="themeLabel">Dark mode</span></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobileMenuBtn" aria-label="Toggle menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <strong id="currentView">All notes</strong></div>
+        <div class="top-actions">
+          <label class="search-box">
+            <span>⌕</span>
+            <input type="search" id="searchInput" placeholder="Search your notes..." aria-label="Search notes">
+            <kbd>⌘ K</kbd>
+          </label>
+          <button class="avatar" title="Your notebook">N</button>
+        </div>
+      </header>
+
+      <section class="welcome-row">
+        <div>
+          <p class="eyebrow">YOUR PERSONAL SPACE</p>
+          <h1 id="pageTitle">All notes <span class="sparkle">✦</span></h1>
+          <p class="subtitle">Capture thoughts, organize your life, and keep your best ideas close.</p>
+        </div>
+        <button class="primary-btn" id="headerNewBtn">＋ Create a note</button>
+      </section>
+
+      <section class="stats-row" aria-label="Notebook statistics">
+        <article class="stat-card">
+          <div class="stat-icon lavender">▤</div>
+          <div><span>Total notes</span><strong id="totalStat">0</strong></div>
+          <span class="stat-decoration">↗</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon rose">♡</div>
+          <div><span>Favorites</span><strong id="favoriteStat">0</strong></div>
+          <span class="stat-decoration">✦</span>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon mint">✓</div>
+          <div><span>Folders</span><strong>4</strong></div>
+          <span class="stat-decoration">✧</span>
+        </article>
+      </section>
+
+      <section class="notes-section">
+        <div class="section-heading">
+          <div><h2 id="sectionTitle">Your notes</h2><p id="notesSubtitle">Everything you have written, all in one view.</p></div>
+          <select id="sortSelect" aria-label="Sort notes">
+            <option value="updated">Recently updated</option>
+            <option value="created">Oldest first</option>
+            <option value="title">Title A–Z</option>
+          </select>
+        </div>
+        <div class="notes-grid" id="notesGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <div class="empty-illustration">✎</div>
+          <h3>No notes here yet</h3>
+          <p>Create a note and give your ideas a place to grow.</p>
+          <button class="primary-btn" id="emptyNewBtn">＋ Create your first note</button>
+        </div>
+      </section>
+      <footer class="footer"><span>Made for your thoughts <b>✦</b></span><span id="saveStatus">All changes saved locally</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="noteModal" hidden>
+    <section class="note-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <div><p class="eyebrow">YOUR NOTE</p><h2 id="modalTitle">Create a note</h2></div>
+        <button class="icon-btn close-btn" id="closeModalBtn" aria-label="Close">×</button>
+      </div>
+      <form id="noteForm">
+        <label class="field-label" for="noteTitle">Title</label>
+        <input id="noteTitle" class="text-field" type="text" maxlength="100" placeholder="Give your note a title..." required>
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="noteFolder">Folder</label>
+            <select id="noteFolder" class="text-field">
+              <option>Study</option><option>Personal</option><option>Ideas</option><option>Work</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="noteColor">Card color</label>
+            <select id="noteColor" class="text-field">
+              <option value="lavender">Lavender</option><option value="peach">Peach</option><option value="mint">Mint</option><option value="blue">Sky blue</option><option value="cream">Cream</option>
+            </select>
+          </div>
+        </div>
+        <label class="field-label" for="noteContent">Your note</label>
+        <textarea id="noteContent" class="text-field note-textarea" rows="8" placeholder="Start writing your thoughts..." required></textarea>
+        <div class="modal-footer">
+          <button type="button" class="secondary-btn" id="cancelBtn">Cancel</button>
+          <button type="submit" class="primary-btn"><span>✓</span> Save note</button>
+        </div>
+      </form>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
